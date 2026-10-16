@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "praytime"
+version = "0.1.0"
+description = "Zero-dependency Islamic prayer times calculator (Python port of zarrabi/praytime)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Hamid Zarrabi-Zadeh" },
+]
+maintainers = [
+    { name = "Hamid Zarrabi-Zadeh" },
+]
+keywords = ["prayer", "times", "islam", "astronomy", "salah", "praytime"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Religion",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "mypy>=1.0,<2"]
+
+[project.urls]
+Homepage = "https://github.com/zarrabi/praytime"
+Repository = "https://github.com/zarrabi/praytime"
+Documentation = "https://github.com/zarrabi/praytime#readme"
+Issues = "https://github.com/zarrabi/praytime/issues"
+
+[project.scripts]
+praytime = "praytime.__main__:main"
+
+[tool.setuptools]
+packages = ["praytime"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+praytime = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+src = ["praytime", "tests"]
+
+# ``I`` (isort) and ``UP`` (pyupgrade) are intentionally omitted: the source
+# uses 3.9-compatible ``typing`` generics (``Tuple``/``Dict``) per specs.md §1.4,
+# and import blocks follow the module ownership layout.
+[tool.ruff.lint]
+select = ["E", "F", "W", "B"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+no_implicit_optional = true
+check_untyped_defs = true
+strict_equality = true
+ignore_missing_imports = true
+
+# The returned prayer-time dict mixes str/int values and the legacy get_times
+# wrapper intentionally mirrors the JS dynamic typing, so two error codes are
+# relaxed to keep the parity-oriented port type-checkable without editing the
+# translation layer.
+disable_error_code = ["operator", "return-value"]
