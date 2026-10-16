@@ -1,0 +1,112 @@
+name: Publish
+
+# Builds the distributions and publishes them to PyPI / TestPyPI.
+#
+# Publishing uses PyPI Trusted Publishing (OIDC) — no API token is stored in
+# the repo. Before the first run you must:
+#
+#   1. Configure a publisher on PyPI:
+#        https://pypi.org/manage/account/publishing/          (production)
+#        https://test.pypi.org/manage/account/publishing/      (test)
+#      For an existing project use "Add a new publisher"; for a project that
+#      does not exist yet use "Add a new pending publisher".
+#        Owner:            khajavi
+#        Repository:       praytime
+#        Workflow name:    publish.yml
+#        Environment name: pypi   (or: testpypi)
+#   2. Create the matching GitHub environments (Settings → Environments):
+#        pypi       and   testpypi
+#      (optionally restrict them to protected branches / required reviewers).
+#
+# Release flow: publish a GitHub Release -> the "pypi" job uploads the build.
+# Manual flow:  Actions -> Publish -> Run workflow -> choose testpypi or pypi.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Index to publish to"
+        type: choice
+        options:
+          - testpypi
+          - pypi
+        default: testpypi
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build distributions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install build tooling
+        run: python -m pip install --upgrade build twine
+
+      - name: Build sdist and wheel
+        run: python -m build
+
+      - name: Validate distributions
+        run: python -m twine check dist/*
+
+      - name: Upload distributions artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish-to-testpypi:
+    name: Publish to TestPyPI
+    needs: build
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.target == 'testpypi'
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/praytime
+    permissions:
+      id-token: write
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  publish-to-pypi:
+    name: Publish to PyPI
+    needs: build
+    if: >-
+      github.event_name == 'release' ||
+      (github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.target == 'pypi')
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/praytime
+    permissions:
+      id-token: write
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
