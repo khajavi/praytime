@@ -1,5 +1,13 @@
 # praytime
 
+> [!WARNING]
+> **Disclaimer.** This library is a port of the original
+> [`zarrabi/praytime`](https://github.com/zarrabi/praytime) produced using
+> AI-agent code-generation tooling. Despite extensive testing against the
+> upstream implementation, it may contain bugs in prayer-time calculations.
+> Please use it at your own responsibility and verify the times before relying
+> on them. See [Disclaimer](#disclaimer) for details.
+
 Zero-dependency Islamic prayer times calculator — a faithful Python port of
 [`zarrabi/praytime`](https://github.com/zarrabi/praytime) (v3.2.0).
 
@@ -9,13 +17,6 @@ same standard astronomical formulas as the JavaScript library (USNO approximate
 solar coordinates + hour-angle trigonometry). The port reproduces the JS
 numerical behaviour exactly, including its deliberate quirks, while exposing an
 idiomatic, chainable, fully type-hinted Python API.
-
-> **Disclaimer.** This library is a port of the original
-> [`zarrabi/praytime`](https://github.com/zarrabi/praytime) produced using
-> AI-agent code-generation tooling. Despite extensive testing against the
-> upstream implementation, it may contain bugs in prayer-time calculations.
-> Please use it at your own responsibility and verify the times before relying
-> on them. See [Disclaimer](#disclaimer) below.
 
 ## Status
 
@@ -294,18 +295,19 @@ the roadmap in [`docs/plan.md`](docs/plan.md).
 
 ## Disclaimer
 
-This library is a Python port of the original
-[`zarrabi/praytime`](https://github.com/zarrabi/praytime) library, produced with
-AI-agent code-generation tooling ("agent-driven development"). Although it is
-tested extensively against the upstream JavaScript implementation — including a
-pytest suite and thousands of golden snapshots generated directly from the
-original code — automated translation can still introduce bugs, so the
-prayer-time calculations may be incorrect in some cases.
-
-Always verify the computed times against an authoritative local source before
-relying on them for worship. This software is provided **"as is", without
-warranty of any kind**, and the authors and contributors accept no liability for
-its use — **you use it at your own responsibility.**
+> [!WARNING]
+> This library is a Python port of the original
+> [`zarrabi/praytime`](https://github.com/zarrabi/praytime) library, produced
+> with AI-agent code-generation tooling ("agent-driven development"). Although
+> it is tested extensively against the upstream JavaScript implementation —
+> including a pytest suite and thousands of golden snapshots generated directly
+> from the original code — automated translation can still introduce bugs, so
+> the prayer-time calculations may be incorrect in some cases.
+>
+> Always verify the computed times against an authoritative local source before
+> relying on them for worship. This software is provided **"as is", without
+> warranty of any kind**, and the authors and contributors accept no liability
+> for its use — **you use it at your own responsibility.**
 
 ## License
 
