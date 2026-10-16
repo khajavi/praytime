@@ -11,10 +11,10 @@ requires-python = ">=3.9"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [
-    { name = "Hamid Zarrabi-Zadeh" },
+    { name = "Milad Khajavi" },
 ]
 maintainers = [
-    { name = "Hamid Zarrabi-Zadeh" },
+    { name = "Milad Khajavi" },
 ]
 keywords = ["prayer", "times", "islam", "astronomy", "salah", "praytime"]
 classifiers = [
@@ -36,10 +36,11 @@ dependencies = []
 dev = ["pytest", "ruff", "mypy>=1.0,<2"]
 
 [project.urls]
-Homepage = "https://github.com/zarrabi/praytime"
-Repository = "https://github.com/zarrabi/praytime"
-Documentation = "https://github.com/zarrabi/praytime#readme"
-Issues = "https://github.com/zarrabi/praytime/issues"
+Homepage = "https://github.com/khajavi/praytime"
+Repository = "https://github.com/khajavi/praytime"
+Documentation = "https://github.com/khajavi/praytime#readme"
+Issues = "https://github.com/khajavi/praytime/issues"
+"Upstream (zarrabi/praytime)" = "https://github.com/zarrabi/praytime"
 
 [project.scripts]
 praytime = "praytime.__main__:main"
