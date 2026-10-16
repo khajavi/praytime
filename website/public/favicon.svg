@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="praytime">
+  <rect width="64" height="64" rx="14" fill="#0a7d5a" />
+  <path
+    d="M40 14a18 18 0 1 0 0 36 14 14 0 1 1 0-36z"
+    fill="#ffffff"
+  />
+  <circle cx="44" cy="24" r="3.2" fill="#ffffff" />
+</svg>

@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+const [readme] = await getCollection('readme');
+const { Content, headings } = await render(readme);
+
+const toc = headings.filter((heading) => heading.depth === 2);
+---
+
+<Base>
+  <header class="hero">
+    <div class="hero__inner">
+      <p class="hero__eyebrow">Python package</p>
+      <h1 class="hero__title">praytime</h1>
+      <p class="hero__tagline">
+        Zero-dependency Islamic prayer times calculator — a faithful Python port of
+        <a href="https://github.com/zarrabi/praytime">zarrabi/praytime</a> for Fajr, Sunrise,
+        Dhuhr, Asr, Sunset, Maghrib, Isha, and Midnight.
+      </p>
+      <p class="hero__install">pip install praytime</p>
+      <div class="hero__links">
+        <a href="https://pypi.org/project/praytime/">PyPI</a>
+        <a href="https://github.com/khajavi/praytime">GitHub</a>
+        <a href="#documentation">Documentation</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="toc">
+      <nav aria-label="On this page">
+        <p class="toc__title">On this page</p>
+        <ul>
+          {
+            toc.map((heading) => (
+              <li>
+                <a href={`#${heading.slug}`}>{heading.text}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section id="documentation" class="doc-section">
+        <p class="kicker">Documentation</p>
+        <div class="markdown-body">
+          <Content />
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <span>MIT licensed · <code>Copyright (c) 2007-2025 Hamid Zarrabi-Zadeh</code></span>
+      <span>
+        <a href="https://github.com/khajavi/praytime">Source</a> ·
+        <a href="https://pypi.org/project/praytime/">PyPI</a>
+      </span>
+    </div>
+  </footer>
+</Base>
