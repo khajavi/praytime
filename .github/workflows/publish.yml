@@ -18,8 +18,12 @@ name: Publish
 #        pypi       and   testpypi
 #      (optionally restrict them to protected branches / required reviewers).
 #
-# Release flow: publish a GitHub Release -> the "pypi" job uploads the build.
+# Release flow: publishing a GitHub Release triggers the build; the PyPI upload
+#               runs only when the repository variable PUBLISH_TO_PYPI is set to
+#               "true" (Settings → Secrets and variables → Actions → Variables).
+#               This is opt-in so a tag/release can be created without uploading.
 # Manual flow:  Actions -> Publish -> Run workflow -> choose testpypi or pypi.
+#               Manual runs always publish regardless of the variable.
 
 on:
   release:
@@ -87,12 +91,16 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
 
   publish-to-pypi:
     name: Publish to PyPI
     needs: build
+    # Release-triggered uploads are opt-in via the PUBLISH_TO_PYPI repository
+    # variable so a release can be tagged without republishing. Manual runs
+    # (workflow_dispatch -> pypi) always publish.
     if: >-
-      github.event_name == 'release' ||
+      (github.event_name == 'release' && vars.PUBLISH_TO_PYPI == 'true') ||
       (github.event_name == 'workflow_dispatch' &&
       github.event.inputs.target == 'pypi')
     runs-on: ubuntu-latest
@@ -110,3 +118,5 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
